@@ -1,5 +1,6 @@
 import express from 'express'
 import {Request, Response} from 'express'
+import {Note, Tag} from './src/classes';
 
 const app = express()
 
@@ -20,6 +21,8 @@ class Note {
 }
 
 const noteList: Note[] = [];
+const tagList: Tag[] = [];
+
 
 noteList.push(new Note({title:"titletest", content:"TestContent" }));
 
@@ -67,5 +70,34 @@ app.delete('/note/:id', function (req: Request, res: Response) {
     res.status(400).send("Error: check your note id");
   }
 });
+
+
+//-----------------------TAGS---------------------------------
+
+
+
+
+
+app.get('/tags', function (req: Request, res: Response) {
+  try{
+      
+      res.status(200).send(tagList)
+  }
+  catch{
+      res.status(404).send('Error: check your tag')
+  }
+})
+app.post('/tags', function (req: Request, res: Response) {
+  try{
+    const tag = new Tag(req.body.tag)
+    tagList.push(tag)
+    res.send(tag)
+       
+  }catch{
+    res.status(400).send("Error: check your tag");
+  }
+})
+
+
 
 app.listen(3000)
