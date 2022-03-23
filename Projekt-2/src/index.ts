@@ -1,24 +1,8 @@
 import express from 'express'
 import {Request, Response} from 'express'
-import {Note, Tag} from './src/classes';
+import {Note, Tag} from './classes';
 
 const app = express()
-
-class Note {
-    title: string;
-    content: string;
-    createDate?: Date;
-    tags?: string[];
-    id?: number;
-
-    constructor (note: Note){
-        this.title      = note.title || "New note";
-        this.content    = note.content || "";
-        this.createDate = new Date();
-        this.tags       = note.tags || [];
-        this.id         = note.id || Date.now(); 
-    }
-}
 
 const noteList: Note[] = [];
 const tagList: Tag[] = [];
