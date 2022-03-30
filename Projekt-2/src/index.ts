@@ -1,16 +1,18 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import {Request, Response} from 'express'
-import {Note, Tag} from './classes';
+import {Note, Tag, User} from './classes';
+import { stringify } from 'querystring';
 
 const app = express()
 
 const noteList: Note[] = [];
 const tagList: Tag[] = [];
+const userList: User[] = [];
 
 
 noteList.push(new Note({title:"titletest", content:"TestContent" }));
-
+userList.push(new User({login:"login", password:"password" }));
 
 
 app.use(express.json())
@@ -83,7 +85,7 @@ app.post('/tags', function (req: Request, res: Response) {
 })
 
 
-app.delete('/tag/:id', (req: Request, res: Response) => {
+app.delete('/tags/:id', (req: Request, res: Response) => {
   try{
       const index = tagList.findIndex(tag => tag.id === Number(req.params.id))
       tagList.splice(index, 1)
@@ -96,7 +98,7 @@ app.delete('/tag/:id', (req: Request, res: Response) => {
 })
 
 
-app.put('/tag/:id', (req: Request, res: Response) => {
+app.put('/tags/:id', (req: Request, res: Response) => {
   try{
       let foundTag = tagList.find(tag => tag.id === Number(req.params.id))
       if(foundTag){
@@ -115,24 +117,23 @@ app.put('/tag/:id', (req: Request, res: Response) => {
 const user1 = "user1";
 const password1 = "password1";
 
-app.post('/login/:userLogin/:password', function (req: Request, res: Response) {
+app.post('/login', function (req: Request, res: Response) {
   try{
-
-    const payload = req.params.userLogin;
-    const secret  = req.params.password;
-
-    if(payload == user1 && secret == password1){
-      const token = jwt.sign(payload, secret)
-      res.status(200).send({token});
-      console.log(token);
-    }else{
-      res.status(400).send("Error: check your login and password");
-    }
+    const user = new User ({login: req.body.login, password: req.body.password});
+    userList.push(user);
     
+    const payload = req.body.login;
+    const secret  = req.body.password;
+    const token   = jwt.sign(payload, secret)
+    
+    res.status(200).send(token);
+      
   }catch{
     res.status(401).send("Error: check your login and password");
   }
 })
+//const payload = req.body.userLogin;
+//const secret  = req.body.password;
 
 //const authData = req.heders.authorization;
 //const token = authData?.split(' ')[1] ?? '';

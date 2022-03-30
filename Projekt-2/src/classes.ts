@@ -19,9 +19,19 @@ class Tag{
     id?: number
 
     constructor(tag: Tag){
-        this.name = tag.name
-        this.id = Date.now() || tag.id
+        this.name = tag.name;
+        this.id   = Date.now() || tag.id;
     }
 }
 
-export {Note, Tag};
+class User{
+    login: string;
+    password: string;
+
+    constructor(user: User){
+        this.login    = user.login;
+        this.password = user.password;
+    }
+}
+
+export {Note, Tag, User};
