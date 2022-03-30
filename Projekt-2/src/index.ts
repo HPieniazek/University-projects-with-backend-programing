@@ -1,4 +1,5 @@
 import express from 'express'
+import jwt from 'jsonwebtoken'
 import {Request, Response} from 'express'
 import {Note, Tag} from './classes';
 
@@ -110,7 +111,25 @@ app.put('/tag/:id', (req: Request, res: Response) => {
       res.send('Cannot update tag of id: ' + req.params.id)
   }
 })
+//--------------------------LOGIN--------------------------------
 
+app.post('/login/:userLogin/:password', function (req: Request, res: Response) {
+  try{
+    const payload = req.params.userLogin;
+    const secret  = req.params.password;
+    const user1 = "user1";
+    const password1 = "password1";
 
+    if(payload == user1 && secret == password1){
+      const token = jwt.sign(payload, secret)
+      res.status(200).send(token);
+      console.log(token);
+    }
+    
+    
+  }catch{
+    res.status(401).send("Error: check your login and password");
+  }
+})
 
 app.listen(3000)
