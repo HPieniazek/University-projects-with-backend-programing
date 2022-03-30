@@ -59,9 +59,6 @@ app.delete('/note/:id', function (req: Request, res: Response) {
 //-----------------------TAGS---------------------------------
 
 
-
-
-
 app.get('/tags', function (req: Request, res: Response) {
   try{
       
@@ -71,6 +68,8 @@ app.get('/tags', function (req: Request, res: Response) {
       res.status(404).send('Error: check your tag')
   }
 })
+
+
 app.post('/tags', function (req: Request, res: Response) {
   try{
     const tag = new Tag(req.body.tag)
@@ -81,6 +80,37 @@ app.post('/tags', function (req: Request, res: Response) {
     res.status(400).send("Error: check your tag");
   }
 })
+
+
+app.delete('/tag/:id', (req: Request, res: Response) => {
+  try{
+      const index = tagList.findIndex(tag => tag.id === Number(req.params.id))
+      tagList.splice(index, 1)
+      res.send(tagList)
+     
+  }
+  catch{
+      res.send('Error: Cant delete tag of id: ' + req.params.id)
+  }
+})
+
+
+app.put('/tag/:id', (req: Request, res: Response) => {
+  try{
+      let foundTag = tagList.find(tag => tag.id === Number(req.params.id))
+      if(foundTag){
+          foundTag = new Tag({...foundTag, ...req.body.tag})
+          res.status(200).send(foundTag)
+      }else{
+          res.status(404).send('tag not found')
+      }
+      
+  }
+  catch{
+      res.send('Cannot update tag of id: ' + req.params.id)
+  }
+})
+
 
 
 app.listen(3000)
