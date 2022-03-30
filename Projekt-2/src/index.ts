@@ -132,4 +132,8 @@ app.post('/login/:userLogin/:password', function (req: Request, res: Response) {
   }
 })
 
+const authData = req.heders.authorization;
+const token = authData?.split(' ')[1] ?? '';
+const payload = jwt.verify(token,secret);
+
 app.listen(3000)
