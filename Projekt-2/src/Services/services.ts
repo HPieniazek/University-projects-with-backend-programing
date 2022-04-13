@@ -2,24 +2,34 @@ import fs from 'fs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken'
 import {Note, Tag, User} from '../classes';
+import {readFile, writeFile, writeFileSync} from 'fs';
 
-const notes = require('./Notes/notes');
-const tags = require('./Tags/tags');
+const notes  = require('./Notes/notes');
+const tags   = require('./Tags/tags');
+
+const dataConfigFile = __dirname + '/config.json'
 
 const dataNotesFile = '../Notes/dataNotesFile.json';
 const dataTagsFile = '../Tags/dataTagsFile.json';
 
+
+//Do poprawy
 export function checkToken(req: Request){
       try{
             const authData = req.headers.authorization;
-            const token = authData?.split(' ')[1] ?? '';
-            const payload = jwt.verify(token,"password1");
+            const token    = authData?.split(' ')[1] ?? '';
+            const secret = '';
+            readFile(dataConfigFile,(err,data)=>{
+              if(err) throw err;
+              const secret = JSON.parse(data.toString())
+            }) 
+            const payload  = jwt.verify(token,secret);
             return payload;
       }catch{
             return "Error: Invalid Token"
       }
 }
-
+// TODO - sprawdzić czy działa 
 class Service {
       public async updateNoteStorage(): Promise<void> {
         const data = { notes };
@@ -53,5 +63,6 @@ class Service {
           console.log(err);
         }
       }
+     
     }
 
