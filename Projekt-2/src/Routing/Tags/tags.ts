@@ -1,10 +1,11 @@
 import express from "express";
 import {Request, Response} from 'express'
-import {Note, Tag, User} from '../classes';
-import {readFile, writeFile, writeFileSync} from 'fs';
-import {checkToken} from '../Services/services';
+import {Tag} from '../../classes';
+import {FileService} from '../../Services/services';
+import {checkToken} from '../../Services/token';
 
 const router = express.Router();
+const dataTagsFile = '../Notes/dataTagsFile.json';
 
 const tagList: Tag[] = [];
 tagList.push(new Tag({name:"titletest"}));
@@ -30,6 +31,8 @@ router.post('/', function (req: Request, res: Response) {
     try{
       const tag = new Tag(req.body);
       tagList.push(tag);
+      const updateTagsList = new FileService (dataTagsFile,tagList);
+      updateTagsList.updateStorage();
       res.send(tagList);
          
     }catch{
@@ -42,6 +45,8 @@ router.delete('/:id', (req: Request, res: Response) => {
     try{
         const index = tagList.findIndex(tag => tag.id === Number(req.params.id))
         tagList.splice(index, 1)
+        const updateTagsList = new FileService (dataTagsFile,tagList);
+        updateTagsList.updateStorage();
         res.send(tagList)
        
     }

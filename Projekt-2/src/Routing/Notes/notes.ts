@@ -1,15 +1,16 @@
 import express from "express";
 import {Request, Response} from 'express'
-import {Note, Tag, User} from '../classes';
+import {Note} from '../../classes';
 import {readFile, writeFile, writeFileSync} from 'fs';
-import {checkToken, Service} from '../Services/services';
+import {FileService} from '../../Services/services';
+import {checkToken} from '../../Services/token';
 
 const router = express.Router();
 
 const noteList: Note[] = [];
 noteList.push(new Note({title:"titletest", content:"TestContent" }));
 
-
+const dataNotesFile = '../Notes/dataNotesFile.json';
 
 router.get('/:id', function (req: Request, res: Response) {
   try{
@@ -39,6 +40,8 @@ router.post('/', function (req: Request, res: Response) {
     const payload = checkToken(req);  
     if(payload == "user1"){
       noteList.push(new Note ({title: req.body.title, content: req.body.content, userID: req.body.userID}));
+      const updateNotesList = new FileService (dataNotesFile,noteList);
+      updateNotesList.updateStorage()
       res.status(200).send(noteList);
     }else{
       res.status(400).send("error");
@@ -56,6 +59,8 @@ router.put('/:id', function (req: Request, res: Response) {
       const updateNote = new Note(req.body.note);
       const index = noteList.findIndex(note => note.id === Number(req.params.id));
       noteList[index] = updateNote;
+      const updateNotesList = new FileService (dataNotesFile,noteList);
+      updateNotesList.updateStorage()
       res.status(200).send(updateNote);
     }else{
       res.status(400).send("error");
@@ -72,6 +77,8 @@ router.delete('/:id', function (req: Request, res: Response) {
     if(payload == "user1"){
       const index = noteList.findIndex(note => note.id === Number(req.params.id))
       noteList.splice(index, 1)
+      const updateNotesList = new FileService (dataNotesFile,noteList);
+      updateNotesList.updateStorage()
       res.status(204).send(noteList)
     }else{
       res.status(400).send("error");
