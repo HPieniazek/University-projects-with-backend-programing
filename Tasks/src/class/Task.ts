@@ -12,7 +12,6 @@ class Task{
     tags:     Tag[];
     employee: Employee;
     client:   Client[]
-
     constructor(task: Task){
         this.id      = randomUUID();
         this.name    = task.name;
