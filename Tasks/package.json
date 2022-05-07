@@ -2,10 +2,10 @@
   "name": "tasks",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "serverRun.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon server.ts"
+    "start": "npx nodemon serverRun.ts"
   },
   "author": "",
   "license": "ISC",
