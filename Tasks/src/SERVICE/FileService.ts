@@ -1,6 +1,5 @@
 import fs from 'fs';
 
-const dataTagsFile = '../Tags/dataTagsFile.json';
 class FileService{
       storeFile : string;
       dataToSave : any;
@@ -10,9 +9,18 @@ class FileService{
             this.dataToSave = dataToSave;
       }
       
-      async readStorage(): Promise<void> {
+       async readStorage() {
             try {
-                  const data = await fs.promises.readFile(this.storeFile, 'utf-8');
+                  await fs.readFile(this.storeFile, 'utf8', (error, data) => {
+                        if(error){
+                           console.log(error);
+                           return;
+                        }
+                        console.log(JSON.parse(data))
+                        return JSON.parse(data);
+                   
+                   })
+                  
             } catch (err) {
                   console.log(err)
             }

@@ -1,25 +1,28 @@
-const TagSchema = require('./../MODEL/classes')
+import express from 'express'
+//const Tag = require('./p2p-server');
 import {Tag} from './../../MODEL/classes';
 import { mainDB } from "../database/mongoConnection";
 import {checkToken} from '../login/token';
 import {randomUUID} from 'crypto';
 import {Request, Response} from 'express'
-import {FileService} from './../../SERVICE/service';
-const dataTagsFile = require("./dataTagsFile.json");
-
+import {FileService} from '../../SERVICE/FileService';
+const dataTagsFile = (__dirname)+'/dataTagsFile.json';
 const tagList: Tag[] = [];
-let user =  new Tag( { id: randomUUID() } )
-tagList.push();
 // TODO zapis i odczyt do pliku 
 
 
+const app = express()
+app.use(express.json());
 
 const getTags = (req: Request, res: Response) => {
     try{ 
         const payload = checkToken(req);
-        console.log(payload)  
         if(payload == "user1"){
-          res.status(200).send(tagList)
+          const readTagsList = new FileService (dataTagsFile,tagList);
+          const readedFile = readTagsList.readStorage()
+          console.log(readedFile)//tu jest dobrze
+          res.status(200).send(readedFile)//__________________________________czemu zwraca pustą tablice 
+
         }else{
           res.status(400).send("error");
         }
@@ -29,72 +32,67 @@ const getTags = (req: Request, res: Response) => {
 }
 
 const getTag = (req: Request, res: Response) => {
-    let user1 =  new Tag( { id: randomUUID() } )
-    //mainDB(user1);   => dodać metody dla kazdego modelu
-    res.status(200).send("OK")
+    
+   
 }
 
 const createTag = (req: Request, res: Response) => {
-    try{
+  try{ 
+      const payload = checkToken(req);
+      if(payload == "user1"){
+        console.log("try")
         const tag = new Tag(req.body);
+        //console.log(tag)
         tagList.push(tag);
+        
         const updateTagsList = new FileService (dataTagsFile,tagList);
         updateTagsList.updateStorage();
-        res.send(tagList);
-           
-      }catch{
-        res.status(400).send("Error: check your tag");
+        console.log(updateTagsList)
+        res.status(201).send(tagList);
+      }else{
+          res.status(400).send("error");
       }
-}
-
-const createPersonPostman = (req, res) => {
-  const { name } = req.body
-  if (!name) {
-    return res
-      .status(400)
-      .json({ success: false, msg: 'please provide name value' })
-  }
-  res.status(201).send({ success: true, data: [...people, name] })
-}
-
-const updatePerson = (req, res) => {
-  const { id } = req.params
-  const { name } = req.body
-
-  const person = people.find((person) => person.id === Number(id))
-
-  if (!person) {
-    return res
-      .status(404)
-      .json({ success: false, msg: `no person with id ${id}` })
-  }
-  const newPeople = people.map((person) => {
-    if (person.id === Number(id)) {
-      person.name = name
+    }catch{
+        res.status(400).send("Error: check your tag");
     }
-    return person
-  })
-  res.status(200).json({ success: true, data: newPeople })
 }
 
-const deletePerson = (req, res) => {
-  const person = people.find((person) => person.id === Number(req.params.id))
-  if (!person) {
-    return res
-      .status(404)
-      .json({ success: false, msg: `no person with id ${req.params.id}` })
+const updateTag = (req: Request, res: Response) => {
+    try{
+        let foundTag = tagList.find(tag => tag.id === String(req.params.id))
+        if(foundTag){
+            foundTag = new Tag({...foundTag, ...req.body.tag})
+            console.log(foundTag)
+            console.log(req.body.tag)
+            res.status(200).send(foundTag)
+        }else{
+            res.status(404).send('tag not found')
+        }
+        
+    }
+    catch{
+        res.send('Cannot update tag of id: ' + req.params.id)
+    }
   }
-  const newPeople = people.filter(
-    (person) => person.id !== Number(req.params.id)
-  )
-  return res.status(200).json({ success: true, data: newPeople })
-}
+
+const deleteTag = (req: Request, res: Response) => {
+    try{
+        const index = tagList.findIndex(tag => tag.id === String(req.params.id))
+        tagList.splice(index, 1)
+        const updateTagsList = new FileService (dataTagsFile,tagList);
+        updateTagsList.updateStorage();
+        res.send(tagList)
+       
+    }
+    catch{
+        res.send('Error: Cant delete tag of id: ' + req.params.id)
+    }
+  }
 
 module.exports = {
   getTag,
-  getTags
-  createPerson,
-  createPersonPostman,
-  updatePerson,
-  deletePerson,
+  getTags,
+  createTag,
+  updateTag,
+  deleteTag,
 }
