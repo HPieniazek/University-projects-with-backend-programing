@@ -16,11 +16,12 @@ const password1 = "password1";
 router.post('', function (req: Request, res: Response) {
   try{
     const user = new User ({login: req.body.login, password: req.body.password});
+    
     console.log(user1)
     console.log(user)
+
     if(user.login == user1 && user.password == password1){
       
-    
       const payload = user.login;
       const secret  = user.password;
       const token   = jwt.sign(payload, secret)
@@ -30,8 +31,6 @@ router.post('', function (req: Request, res: Response) {
     }else{
       res.status(400).send("error");
     }
-    
-  
   }catch{
     res.status(401).send("Error: check your login and password");
   }

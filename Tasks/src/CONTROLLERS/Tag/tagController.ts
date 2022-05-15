@@ -1,6 +1,7 @@
 import express from 'express'
-//const Tag = require('./p2p-server');
+const tagSchema = require('./../../MODEL/mongoModels');
 import {Tag} from './../../MODEL/classes';
+
 import { mainDB } from "../database/mongoConnection";
 import {checkToken} from '../login/token';
 import {randomUUID} from 'crypto';
@@ -14,15 +15,14 @@ const tagList: Tag[] = [];
 const app = express()
 app.use(express.json());
 
-const getTags = (req: Request, res: Response) => {
+const getTags = async (req: Request, res: Response) => {
     try{ 
         const payload = checkToken(req);
         if(payload == "user1"){
           const readTagsList = new FileService (dataTagsFile,tagList);
-          const readedFile = readTagsList.readStorage()
+          const readedFile = await readTagsList.readStorage()
           console.log(readedFile)//tu jest dobrze
-          res.status(200).send(readedFile)//__________________________________czemu zwraca pustą tablice 
-
+          res.status(200).send(readedFile)// zwraca pustą tablice 
         }else{
           res.status(400).send("error");
         }
@@ -40,20 +40,16 @@ const createTag = (req: Request, res: Response) => {
   try{ 
       const payload = checkToken(req);
       if(payload == "user1"){
-        console.log("try")
-        const tag = new Tag(req.body);
-        //console.log(tag)
-        tagList.push(tag);
         
-        const updateTagsList = new FileService (dataTagsFile,tagList);
-        updateTagsList.updateStorage();
-        console.log(updateTagsList)
-        res.status(201).send(tagList);
+        mainDB(tagList, tagSchema)
+        
+        res.status(201).send("ok");
       }else{
           res.status(400).send("error");
       }
     }catch{
-        res.status(400).send("Error: check your tag");
+      console.log("catch "+req.body.id)
+        res.status(401).send("Error: check your tag");
     }
 }
 
@@ -68,7 +64,6 @@ const updateTag = (req: Request, res: Response) => {
         }else{
             res.status(404).send('tag not found')
         }
-        
     }
     catch{
         res.send('Cannot update tag of id: ' + req.params.id)
@@ -81,7 +76,7 @@ const deleteTag = (req: Request, res: Response) => {
         tagList.splice(index, 1)
         const updateTagsList = new FileService (dataTagsFile,tagList);
         updateTagsList.updateStorage();
-        res.send(tagList)
+        res.status(200).send(tagList)
        
     }
     catch{
