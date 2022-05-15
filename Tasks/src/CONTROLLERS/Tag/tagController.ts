@@ -1,6 +1,6 @@
 import express from 'express'
-const tagSchema = require('./../../MODEL/mongoModels');
-import {Tag} from './../../MODEL/classes';
+import {TagSchema} from './../../MODEL/MongoSchemas/TagSchema';
+import {Tag} from './../../MODEL/Classes/Tag';
 
 import { mainDB } from "../database/mongoConnection";
 import {checkToken} from '../login/token';
@@ -41,7 +41,7 @@ const createTag = (req: Request, res: Response) => {
       const payload = checkToken(req);
       if(payload == "user1"){
         
-        mainDB(tagList, tagSchema)
+        mainDB(tagList, TagSchema)
         
         res.status(201).send("ok");
       }else{

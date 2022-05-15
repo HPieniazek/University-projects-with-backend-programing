@@ -1,7 +1,6 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import {Request, Response} from 'express'
-import {Tag, Product, Client, Company, Task, Employee, User} from './src/MODEL/classes';
 import { stringify } from 'querystring';
 
 const app = express()

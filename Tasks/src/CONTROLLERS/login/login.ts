@@ -1,7 +1,7 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import {Request, Response} from 'express'
-import {User} from './../../MODEL/classes';
+import {User} from './../../MODEL/Classes/User';
 //const User = require('./../MODEL/classes').User
 
 const router = express.Router();
