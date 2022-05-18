@@ -40,10 +40,15 @@ const createTag = (req: Request, res: Response) => {
   try{ 
       const payload = checkToken(req);
       if(payload == "user1"){
+        const newTag = new TagSchema({
+          id: req.body.id,
+          header: req.body.header,
+          userID: req.body.userID
+      })
+      console.log("newtag "+newTag)
+        mainDB(newTag, TagSchema)
         
-        mainDB(tagList, TagSchema)
-        
-        res.status(201).send("ok");
+        res.status(201).send(req.body);
       }else{
           res.status(400).send("error");
       }

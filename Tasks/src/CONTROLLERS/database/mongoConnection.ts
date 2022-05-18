@@ -15,13 +15,13 @@ export async function mainDB(data: any, schema: any) {
     db.on('error', (error) => console.log("db.on()", error))
     db.once('open', () => console.log("Connect to database"))
 
-    const newParam = new schema();
+    const newParam = new schema(data);
     
-    console.log((data.constructor.name))
+    console.log(("data.constructor"+data.constructor.name))
     // 3. Akcje - dodawanie wpisu
     
     const saveRet = await newParam.save()
     ;// także .update(), .updateMany(), .validate()
-    console.log('SAVE - new note: ', data.id);
+    console.log('SAVE - new note: ', data);
 
 }
