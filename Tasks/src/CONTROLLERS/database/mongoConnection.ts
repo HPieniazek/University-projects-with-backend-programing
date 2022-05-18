@@ -20,7 +20,6 @@ export async function mainDB(data: any, schema: any) {
     console.log((data.constructor.name))
     // 3. Akcje - dodawanie wpisu
     
-
     const saveRet = await newParam.save()
     ;// także .update(), .updateMany(), .validate()
     console.log('SAVE - new note: ', data.id);
