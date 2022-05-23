@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import {TagModel} from './TagSchema';
-import {EmployeeModel} from './EmployeeSchema';
-import {ClientModel} from './ClientSchema';
+import Schema from "mongoose";
+
 
 const taskSchema = new mongoose.Schema({
     id:       {type: String, required : true},
@@ -9,9 +8,9 @@ const taskSchema = new mongoose.Schema({
     start:    {type: Date, required : true},
     end:      {type: Date, required : true},
     content:  {type: String, required : false},
-    tags:     {type: [TagModel], required : true},
-    employee: {type: EmployeeModel, required : true},
-    client:   {type: [ClientModel], required : true}
+    tags:     {type: Schema.Types.ObjectId, ref: 'tag' },
+    employee: {type: Schema.Types.ObjectId, ref: 'employee' },
+    client:   {type: Schema.Types.ObjectId, ref: 'client' }
 }, {
     timestamps: true
 })

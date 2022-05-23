@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
-import {TagModel} from './TagSchema';
+import Schema from "mongoose";
+
 
 const productSchema = new mongoose.Schema({
     id:      {type: String, required : true},
     name:    {type: String, required : true},
     comment: {type: String, required : true},
-    tag:     {type: [TagModel], required : true}
+    tag:     {type: Schema.Types.ObjectId, ref: 'tag' }
 }, {
     timestamps: true
 })
