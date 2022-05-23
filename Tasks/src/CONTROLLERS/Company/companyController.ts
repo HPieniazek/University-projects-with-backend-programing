@@ -1,6 +1,6 @@
 import express from 'express'
-import {ClientModel} from '../../MODEL/MongoSchemas/ClientSchema';
-import {Client} from '../../MODEL/Classes/Client';
+import {CompanyModel} from './../../MODEL/MongoSchemas/CompanySchema';
+import {Company} from './../../MODEL/Classes/Company';
 
 import { MongoDB } from "../../SERVICE/database/mongoConnection";
 import {checkToken} from '../login/token';
@@ -15,12 +15,12 @@ const dataTagsFile = (__dirname)+'/dataTagsFile.json';
 const app = express()
 app.use(express.json());
 
-const getClients = async (req: Request, res: Response) => {
+const getCompany = async (req: Request, res: Response) => {
     try{ 
         const payload = checkToken(req);
         if(payload == "user1"){
           const mongo = new MongoDB()
-          const readedFiles = await mongo.MongoFind( ClientModel)
+          const readedFiles = await mongo.MongoFind( CompanyModel)
           
           res.status(200).send(readedFiles)// zwraca pustą tablice 
         }else{
@@ -31,17 +31,13 @@ const getClients = async (req: Request, res: Response) => {
     }
 }
 
-const getClient = (req: Request, res: Response) => {
-    
-   
-}
 
-const createClient = async (req: Request, res: Response) => {
+const createCompany = async (req: Request, res: Response) => {
   try{ 
       const payload = checkToken(req);
       if(payload == "user1"){
         const mongo = new MongoDB()
-        const test = await mongo.MongoSave(req.body, ClientModel)
+        const test = await mongo.MongoSave(req.body, CompanyModel)
         res.status(201).send("ok" );
       }else{
           res.status(400).send("error POST TASK");
@@ -53,20 +49,20 @@ const createClient = async (req: Request, res: Response) => {
 }
 
 // do poprawy razem z mongoconection
-const updateClient = async (req: Request, res: Response) => {
+const updateCompany = async (req: Request, res: Response) => {
     try{
         const mongo = new MongoDB()
-        const update = await mongo.MongoUpdate(req.body, ClientModel)
+        const update = await mongo.MongoUpdate(req.body, CompanyModel)
         res.status(200).send(update)
     }catch{
         res.status(404).send('Cannot update tag of id: ' + req.body)
     }
   }
 
-const deleteClient = (req: Request, res: Response) => {
+const deleteCompany = (req: Request, res: Response) => {
     try{
         const mongo = new MongoDB()
-        const test = mongo.MongoDelete(req.body,ClientModel)
+        const test = mongo.MongoDelete(req.body,CompanyModel)
         res.status(200).send(test);
     }catch{
         res.send('Error: Cant delete tag of id: ' + req.body)
@@ -74,9 +70,8 @@ const deleteClient = (req: Request, res: Response) => {
   }
 
 module.exports = {
-  getClient,
-  getClients,
-  createClient,
-  updateClient,
-  deleteClient,
+  getCompany,
+  createCompany,
+  updateCompany,
+  deleteCompany,
 }

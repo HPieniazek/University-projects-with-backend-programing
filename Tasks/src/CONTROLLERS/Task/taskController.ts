@@ -6,7 +6,7 @@ import { MongoDB } from "../../SERVICE/database/mongoConnection";
 import {checkToken} from '../login/token';
 import {randomUUID} from 'crypto';
 import {Request, Response} from 'express'
-import {FileService} from '../../SERVICE/FileService';
+import {FileService} from '../../SERVICE/File/FileService';
 const dataTagsFile = (__dirname)+'/dataTagsFile.json';
 
 

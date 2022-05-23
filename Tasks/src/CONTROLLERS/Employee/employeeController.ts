@@ -6,7 +6,7 @@ import { MongoDB } from "../../SERVICE/database/mongoConnection";
 import {checkToken} from '../login/token';
 import {randomUUID} from 'crypto';
 import {Request, Response} from 'express'
-import {FileService} from '../../SERVICE/FileService';
+import {FileService} from '../../SERVICE/File/FileService';
 const dataTagsFile = (__dirname)+'/dataTagsFile.json';
 
 
@@ -15,7 +15,7 @@ const dataTagsFile = (__dirname)+'/dataTagsFile.json';
 const app = express()
 app.use(express.json());
 
-const getTasks = async (req: Request, res: Response) => {
+const getEmployees = async (req: Request, res: Response) => {
     try{ 
         const payload = checkToken(req);
         if(payload == "user1"){
@@ -31,12 +31,12 @@ const getTasks = async (req: Request, res: Response) => {
     }
 }
 
-const getTask = (req: Request, res: Response) => {
+const getEmployee = (req: Request, res: Response) => {
     
    
 }
 
-const createTask = async (req: Request, res: Response) => {
+const createEmployee = async (req: Request, res: Response) => {
   try{ 
       const payload = checkToken(req);
       if(payload == "user1"){
@@ -53,7 +53,7 @@ const createTask = async (req: Request, res: Response) => {
 }
 
 // do poprawy razem z mongoconection
-const updateTask = async (req: Request, res: Response) => {
+const updateEmployee = async (req: Request, res: Response) => {
     try{
         const mongo = new MongoDB()
         const update = await mongo.MongoUpdate(req.body, EmployeeModel)
@@ -63,7 +63,7 @@ const updateTask = async (req: Request, res: Response) => {
     }
   }
 
-const deleteTask = (req: Request, res: Response) => {
+const deleteEmployee = (req: Request, res: Response) => {
     try{
         const mongo = new MongoDB()
         const test = mongo.MongoDelete(req.body,EmployeeModel)
@@ -74,9 +74,9 @@ const deleteTask = (req: Request, res: Response) => {
   }
 
 module.exports = {
-  getTasks,
-  getTask,
-  createTask,
-  updateTask,
-  deleteTask,
+  getEmployees,
+  getEmployee,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
 }

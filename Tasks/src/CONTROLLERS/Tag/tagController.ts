@@ -6,7 +6,7 @@ import { MongoDB } from "../../SERVICE/database/mongoConnection";
 import {checkToken} from '../login/token';
 import {randomUUID} from 'crypto';
 import {Request, Response} from 'express'
-import {FileService} from '../../SERVICE/FileService';
+import {FileService} from '../../SERVICE/File/FileService';
 const dataTagsFile = (__dirname)+'/dataTagsFile.json';
 
 
@@ -19,8 +19,6 @@ const getTags = async (req: Request, res: Response) => {
     try{ 
         const payload = checkToken(req);
         if(payload == "user1"){
-          //const readTagsList = new FileService (dataTagsFile,tagList);
-          //const readedFile = await readTagsList.readStorage()
           const mongo = new MongoDB()
           const readedFiles = await mongo.MongoFind( TagModel)
           console.log(readedFiles)//tu jest dobrze

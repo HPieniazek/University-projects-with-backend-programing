@@ -10,4 +10,4 @@ const companySchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
-export const CompanySchema = mongoose.model('company', companySchema);
+export const CompanyModel = mongoose.model('company', companySchema);
