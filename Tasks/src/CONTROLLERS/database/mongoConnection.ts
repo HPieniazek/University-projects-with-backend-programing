@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from "mongoose";
 import 'dotenv/config' 
+import { error } from 'console';
 //import { Tag } from '../../MODEL/classes';
 //require('dotenv').config({ path: '../.env' })
 
@@ -11,6 +12,11 @@ export class MongoDB {
 
     constructor(connString:string = 'mongodb+srv://HubPi:1234@hub-pab.c5efk.mongodb.net/Task?retryWrites=true&w=majority'){
         this.connString = connString;
+        console.log('Connecting to mongo');
+        mongoose.connect(this.connString)
+        const db = mongoose.connection
+        db.on('error', (error) => console.log("db.on()", error))
+        db.once('open', () => console.log("Connect to database"))
     }
 
     async MongoConnection() {
@@ -23,16 +29,47 @@ export class MongoDB {
 
     async MongoSave(data: any, schema: any) {
         const newParam = new schema(data);
-        // 3. Akcje - dodawanie wpisu
-        const saveRet = await newParam.save();// także .update(), .updateMany(), .validate()
-        saveRet.validate(function(error) {
-            if (error)
-                console.log(error);
-            else
-                console.log('pass validate');
-        });
-        console.log('SAVE - new : ');
         
-
+        console.log('SAVE - new : ');
+        try {
+            const saveRet = await newParam.save();
+            saveRet.validate();
+            console.log('SAVE - new : ',saveRet);
+        } catch {
+            console.error(error);
+        }
+      
+    }
+    async MongoDelete(data: any, schema: any){
+        const newParam = new schema(data);
+        console.log('SAVE - new : ');
+        try {
+            const saveRet = await newParam.deleteOne();
+            
+            console.log('DELETE : ',saveRet);
+        } catch {
+            console.error(error);
+        }
+        
+    }
+    async MongoFind( schema: any){
+        const newParam = new schema();
+        try {
+            const findRet = await schema.find({});
+            console.log('FIND : ',findRet);
+        } catch {
+            console.error(error);
+        }
+        
+    }
+    // do poprawy razem z
+    async MongoUpdate(data: any, schema: any){
+        const newParam = new schema();
+        try {
+            const saveRet = await newParam.updateOne(data);
+            console.log('updateOne : ',saveRet);
+        } catch {
+            console.error(error);
+        }
     }
 }

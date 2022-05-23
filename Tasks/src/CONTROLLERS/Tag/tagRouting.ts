@@ -20,10 +20,10 @@ const {
 // router.put('/:id', updateTag)
 // router.delete('/:id', deleteTag);
 
-router.route('/').get(getTags).post(createTag)
-router.route('/:id').get(getTag).delete(deleteTag).put(updateTag)
+router.route('/').get(getTags).post(createTag).delete(deleteTag).put(updateTag)
+router.route('/:id').get(getTag)
 
-module.exports = router;
+module.exports = router; 
  
 
       

@@ -10,4 +10,4 @@ const companySchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
-export const CompanySchema = mongoose.model('tag', companySchema);
+export const CompanySchema = mongoose.model('company', companySchema);

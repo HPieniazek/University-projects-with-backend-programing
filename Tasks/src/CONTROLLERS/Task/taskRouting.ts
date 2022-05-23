@@ -1,31 +1,26 @@
 import express from "express";
-import {Request, Response} from 'express'
-import {readFile, writeFile, writeFileSync} from 'fs';
-
-
 const router = express.Router();
+////const TagSchema = require('./../MODEL/classes')
+////import {Tag} from './../../MODEL/classes';
+
+
+const {
+  getTask,
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask
+} = require("./taskController")
 
 
 
-router.get('/:id', function (req: Request, res: Response) {
- 
-})
+// router.get('/:id', getTag)
+// router.get('/', getTags)
+// router.post('/', createTag)
+// router.put('/:id', updateTag)
+// router.delete('/:id', deleteTag);
 
-router.get('/',function(req:Request, res:Response){
-    res.status(200).send("OK")
-})
-router.post('/', function (req: Request, res: Response) {
+router.route('/').get(getTasks).post(deleteTask).delete(createTask).put(updateTask)
+router.route('/:id').get(getTask)
 
-})
-
-router.put('/:id', function (req: Request, res: Response) {
-
-})
-
-
-router.delete('/:id', function (req: Request, res: Response) {
-
-});
-
-module.exports = router;
-      
+module.exports = router; 
