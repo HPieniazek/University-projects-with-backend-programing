@@ -1,8 +1,9 @@
 import express from 'express'
-import {TagSchema} from './../../MODEL/MongoSchemas/TagSchema';
+import {TagModel} from './../../MODEL/MongoSchemas/TagSchema';
 import {Tag} from './../../MODEL/Classes/Tag';
+import mongoose from "mongoose";
 
-import { mainDB } from "../database/mongoConnection";
+import { MongoDB } from "../database/mongoConnection";
 import {checkToken} from '../login/token';
 import {randomUUID} from 'crypto';
 import {Request, Response} from 'express'
@@ -39,21 +40,22 @@ const getTag = (req: Request, res: Response) => {
 const createTag = (req: Request, res: Response) => {
   try{ 
       const payload = checkToken(req);
+      console.log(req.body)
       if(payload == "user1"){
-        const newTag = new TagSchema({
+        
+        const newTag = new TagModel({
           id: req.body.id,
           header: req.body.header,
           userID: req.body.userID
-      })
-      console.log("newtag "+newTag)
-        mainDB(newTag, TagSchema)
-        
+      })    
+        const Mongo = new MongoDB()
+        const mongoConnection = Mongo.MongoConnection();
+        const MongoSave = Mongo.MongoSave(newTag,TagModel);
         res.status(201).send(req.body);
       }else{
           res.status(400).send("error");
       }
     }catch{
-      console.log("catch "+req.body.id)
         res.status(401).send("Error: check your tag");
     }
 }

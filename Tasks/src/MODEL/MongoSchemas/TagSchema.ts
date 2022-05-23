@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const tagSchema = new mongoose.Schema({
-    id:     {type: String, required : false},
-    header: {type: String, required : false},
+    id:     {type: String, required : true},
+    header: {type: String, required : true},
     userID: {type: [String], required : false, default:[]}
 }, {
     timestamps: true
 })
-export const TagSchema = mongoose.model('tag', tagSchema);
+export const TagModel = mongoose.model('tag', tagSchema);

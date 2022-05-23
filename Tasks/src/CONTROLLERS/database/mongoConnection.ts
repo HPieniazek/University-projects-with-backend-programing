@@ -6,22 +6,33 @@ import 'dotenv/config'
 
 const app = express();
 
-const connString = 'mongodb+srv://HubPi:1234@hub-pab.c5efk.mongodb.net/Task?retryWrites=true&w=majority'
+export class MongoDB {
+    connString:string = 'mongodb+srv://HubPi:1234@hub-pab.c5efk.mongodb.net/Task?retryWrites=true&w=majority'
 
-export async function mainDB(data: any, schema: any) {
-    console.log('Connecting to mongo');
-    mongoose.connect(connString)
-    const db = mongoose.connection
-    db.on('error', (error) => console.log("db.on()", error))
-    db.once('open', () => console.log("Connect to database"))
+    constructor(connString:string = 'mongodb+srv://HubPi:1234@hub-pab.c5efk.mongodb.net/Task?retryWrites=true&w=majority'){
+        this.connString = connString;
+    }
 
-    const newParam = new schema(data);
-    
-    console.log(("data.constructor"+data.constructor.name))
-    // 3. Akcje - dodawanie wpisu
-    
-    const saveRet = await newParam.save()
-    ;// także .update(), .updateMany(), .validate()
-    console.log('SAVE - new note: ', data);
+    async MongoConnection() {
+        console.log('Connecting to mongo');
+        mongoose.connect(this.connString)
+        const db = mongoose.connection
+        db.on('error', (error) => console.log("db.on()", error))
+        db.once('open', () => console.log("Connect to database"))
+    }
 
+    async MongoSave(data: any, schema: any) {
+        const newParam = new schema(data);
+        // 3. Akcje - dodawanie wpisu
+        const saveRet = await newParam.save();// także .update(), .updateMany(), .validate()
+        saveRet.validate(function(error) {
+            if (error)
+                console.log(error);
+            else
+                console.log('pass validate');
+        });
+        console.log('SAVE - new : ');
+        
+
+    }
 }
