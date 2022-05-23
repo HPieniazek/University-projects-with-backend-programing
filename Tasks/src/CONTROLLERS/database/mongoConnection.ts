@@ -29,17 +29,11 @@ export class MongoDB {
 
     async MongoSave(data: any, schema: any) {
         const newParam = new schema(data);
-        
-        console.log('SAVE - new : ');
-        try {
-            const saveRet = await newParam.save();
-            saveRet.validate();
-            console.log('SAVE - new : ',saveRet);
-        } catch {
-            console.error(error);
-        }
-      
+        console.log(newParam)
+        const saveRet = await newParam.save().catch(error);
+        console.log('SAVE - new : ',saveRet);
     }
+
     async MongoDelete(data: any, schema: any){
         const newParam = new schema(data);
         console.log('SAVE - new : ');

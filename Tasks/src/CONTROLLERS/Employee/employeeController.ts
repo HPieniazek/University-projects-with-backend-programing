@@ -1,6 +1,6 @@
 import express from 'express'
-import {TaskModel} from './../../MODEL/MongoSchemas/TaskSchema';
-import {Task} from './../../MODEL/Classes/Task';
+import {EmployeeModel} from '../../MODEL/MongoSchemas/EmployeeSchema';
+import {Employee} from '../../MODEL/Classes/Employee';
 
 import { MongoDB } from "../database/mongoConnection";
 import {checkToken} from '../login/token';
@@ -20,7 +20,7 @@ const getTasks = async (req: Request, res: Response) => {
         const payload = checkToken(req);
         if(payload == "user1"){
           const mongo = new MongoDB()
-          const readedFiles = await mongo.MongoFind( TaskModel)
+          const readedFiles = await mongo.MongoFind( EmployeeModel)
           
           res.status(200).send(readedFiles)// zwraca pustą tablice 
         }else{
@@ -41,7 +41,7 @@ const createTask = async (req: Request, res: Response) => {
       const payload = checkToken(req);
       if(payload == "user1"){
         const mongo = new MongoDB()
-        const test = await mongo.MongoSave(req.body, TaskModel)
+        const test = await mongo.MongoSave(req.body, EmployeeModel)
         res.status(201).send("ok" );
       }else{
           res.status(400).send("error POST TASK");
@@ -56,7 +56,7 @@ const createTask = async (req: Request, res: Response) => {
 const updateTask = async (req: Request, res: Response) => {
     try{
         const mongo = new MongoDB()
-        const update = await mongo.MongoUpdate(req.body, TaskModel)
+        const update = await mongo.MongoUpdate(req.body, EmployeeModel)
         res.status(200).send(update)
     }catch{
         res.status(404).send('Cannot update tag of id: ' + req.body)
@@ -66,7 +66,7 @@ const updateTask = async (req: Request, res: Response) => {
 const deleteTask = (req: Request, res: Response) => {
     try{
         const mongo = new MongoDB()
-        const test = mongo.MongoDelete(req.body,TaskModel)
+        const test = mongo.MongoDelete(req.body,EmployeeModel)
         res.status(200).send(test);
     }catch{
         res.send('Error: Cant delete tag of id: ' + req.body)
