@@ -2,7 +2,7 @@ import express from 'express'
 import {EmployeeModel} from '../../MODEL/MongoSchemas/EmployeeSchema';
 import {Employee} from '../../MODEL/Classes/Employee';
 
-import { MongoDB } from "../database/mongoConnection";
+import { MongoDB } from "../../SERVICE/database/mongoConnection";
 import {checkToken} from '../login/token';
 import {randomUUID} from 'crypto';
 import {Request, Response} from 'express'

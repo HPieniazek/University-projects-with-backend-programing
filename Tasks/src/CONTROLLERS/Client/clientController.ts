@@ -2,7 +2,7 @@ import express from 'express'
 import {ClientModel} from '../../MODEL/MongoSchemas/ClientSchema';
 import {Client} from '../../MODEL/Classes/Client';
 
-import { MongoDB } from "../database/mongoConnection";
+import { MongoDB } from "../../SERVICE/database/mongoConnection";
 import {checkToken} from '../login/token';
 import {randomUUID} from 'crypto';
 import {Request, Response} from 'express'
