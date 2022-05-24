@@ -8,14 +8,14 @@ const app = express()
 app.use(express.json());
 app.use(express.Router());
 
-const login = require('./src/CONTROLLERS/login/login.ts');
-const task = require('./src/CONTROLLERS/Task/taskRouting');
-const tags = require('./src/CONTROLLERS/Tag/tagRouting.ts');
-const client = require('./src/CONTROLLERS/Client/clientRouting.ts');
-const product = require('./src/CONTROLLERS/Product/productRouting.ts');
+const login    = require('./src/CONTROLLERS/login/login.ts');
+const task     = require('./src/CONTROLLERS/Task/taskRouting');
+const tags     = require('./src/CONTROLLERS/Tag/tagRouting.ts');
+const client   = require('./src/CONTROLLERS/Client/clientRouting.ts');
+const product  = require('./src/CONTROLLERS/Product/productRouting.ts');
 const employee = require('./src/CONTROLLERS/Employee/employeeRouting.ts');
-const user = require('./src/CONTROLLERS/User/userRouting.ts');
-const company = require('./src/CONTROLLERS/Company/companyRouting.ts');
+const user     = require('./src/CONTROLLERS/User/userRouting.ts');
+const company  = require('./src/CONTROLLERS/Company /companyRouting.ts');
 
 app.use('/login', login)
 app.use('/task', task)
