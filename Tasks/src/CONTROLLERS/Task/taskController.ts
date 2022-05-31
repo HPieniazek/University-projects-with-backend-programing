@@ -21,13 +21,13 @@ const getTasks = async (req: Request, res: Response) => {
         if(payload == "user1"){
           const mongo = new MongoDB()
           const readedFiles = await mongo.MongoFind( TaskModel)
-          
-          res.status(200).send(readedFiles)// zwraca pustą tablice 
+          console.log("Sended")
+          res.status(200).send(readedFiles)
         }else{
           res.status(400).send("error");
         }
     }catch{
-          res.status(404).send('Error: check your tag');
+          res.status(404).send('Error: check your task');
     }
 }
 
@@ -42,24 +42,23 @@ const createTask = async (req: Request, res: Response) => {
       if(payload == "user1"){
         const mongo = new MongoDB()
         const test = await mongo.MongoSave(req.body, TaskModel)
+        console.log(test)
         res.status(201).send("ok" );
       }else{
-          res.status(400).send("error POST TASK");
+        res.status(400).send("error POST TASK");
       }
     }catch{
-      console.log("catch "+req.body.id)
-        res.status(401).send("Error: check your tag");
+      res.status(401).send("Error: check your task");
     }
 }
 
-// do poprawy razem z mongoconection
 const updateTask = async (req: Request, res: Response) => {
     try{
         const mongo = new MongoDB()
         const update = await mongo.MongoUpdate(req.body, TaskModel)
         res.status(200).send(update)
     }catch{
-        res.status(404).send('Cannot update tag of id: ' + req.body)
+        res.status(404).send('Cannot update task of id: ' + req.body)
     }
   }
 
@@ -69,7 +68,7 @@ const deleteTask = (req: Request, res: Response) => {
         const test = mongo.MongoDelete(req.body,TaskModel)
         res.status(200).send(test);
     }catch{
-        res.send('Error: Cant delete tag of id: ' + req.body)
+        res.send('Error: Cant delete task of id: ' + req.body)
     }
   }
 

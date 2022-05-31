@@ -19,52 +19,79 @@ export class MongoDB {
         db.once('open', () => console.log("Connect to database"))
     }
 
-    async MongoConnection() {
-        console.log('Connecting to mongo');
-        mongoose.connect(this.connString)
-        const db = mongoose.connection
-        db.on('error', (error) => console.log("db.on()", error))
-        db.once('open', () => console.log("Connect to database"))
+    async MongoSave(data: any, Schema: any) {
+        const newParam = new Schema(data);
+        try{
+            const save = await newParam.save();
+            this.MongoDisconnect()
+            return save;
+        }catch(err:any){
+            throw  err.message;
+        }
     }
-
-    async MongoSave(data: any, schema: any) {
-        const newParam = new schema(data);
-        console.log(newParam)
-        const saveRet = await newParam.save().catch(error);
-        console.log('SAVE - new : ',saveRet);
+    
+    async FindByName(data: any, Schema: any){
+        try{
+            const getOne= await Schema.findOne({"name":data.name}).exec()
+            this.MongoDisconnect()
+        }catch{
+            throw new Error;
+        }
     }
+    async FindByDate(data: any, Schema:any){
+        try{
+            const getOne= await Schema.findOne({"date":data.date}).exec()
+            this.MongoDisconnect()
+        }catch{
+            throw new Error;
+        }
+    }
+    
 
-    async MongoDelete(data: any, schema: any){
-        const newParam = new schema(data);
-        console.log('SAVE - new : ');
+    async MongoDelete(data: any, Schema: any){
+        const NewParam = new Schema(data);
         try {
-            const saveRet = await newParam.deleteOne();
-            
-            console.log('DELETE : ',saveRet);
+            const deleteOne = await NewParam.deleteOne();
+            this.MongoDisconnect()
+            return deleteOne
         } catch {
-            console.error(error);
+            return console.error(error);
         }
         
     }
     
-    async MongoFind( schema: any){
-        const newParam = new schema();
+    async MongoFind( Schema: any){
         try {
-            const findRet = await schema.find({});
-            console.log('FIND : ',findRet);
+            const find = await Schema.find({});
+            this.MongoDisconnect()
+            return find;
         } catch {
             console.error(error);
         }
         
     }
-    // do poprawy razem z
-    async MongoUpdate(data: any, schema: any){
-        const newParam = new schema();
-        try {
-            const saveRet = await newParam.updateOne(data);
-            console.log('updateOne : ',saveRet);
-        } catch {
-            console.error(error);
+    async MongoFindOne(data: any, Schema: any){
+        try{
+            const getOne= await Schema.findOne({"name":data.name}).exec()
+            this.MongoDisconnect()
+        }catch{
+            throw new Error;
         }
+    }
+
+    async MongoUpdate(data: any, Schema: any){
+        const NewParam = new Schema(data);
+        try {
+            const update = await NewParam.updateOne();
+            this.MongoDisconnect()
+            return update;
+        } catch {
+            return console.error(error);
+        }
+    }
+
+    MongoDisconnect(){
+        mongoose.disconnect()
+        console.log("Databese is disconnected")
     }
 }

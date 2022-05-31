@@ -15,6 +15,7 @@ const dataTagsFile = (__dirname)+'/dataTagsFile.json';
 const app = express()
 app.use(express.json());
 
+
 const getTags = async (req: Request, res: Response) => {
     try{ 
         const payload = checkToken(req);

@@ -6,14 +6,44 @@ import {TagModel} from './TagSchema'
 
 
 const taskSchema = new mongoose.Schema({
-    id:       {type: String},
-    name:     {type: String},
-    start:    {type: String, required : false, default:""},
-    end:      {type: String, required : false, default:""},
-    content:  {type: String, required : false, default:""},
-    tags:     {type: Schema.Types.ObjectId, ref: 'tag'},
-    employee: {type: Schema.Types.ObjectId, ref: 'employee'},
-    client:   {type: Schema.Types.ObjectId, ref: 'client' }
+    id:{
+        type: String,
+        required : true,
+        default:""
+    },
+    name:{
+        type: String, 
+        required : true, 
+        default:""
+    },
+    start:{
+        type: String, 
+        required : true, 
+        default:""
+    },
+    end:{
+        type: String, 
+        required : true, 
+        default:""
+    },
+    content:{
+        type: String, 
+        required : true, 
+        default:""
+    },
+    tags:{
+        type: Schema.Types.ObjectId, 
+        ref: 'tags'
+    },
+    employee:{
+        type: Schema.Types.ObjectId, 
+        ref: 'employee',
+        required: [true, "Enter employee id"] 
+    },
+    client:{
+        type: Schema.Types.ObjectId,
+        ref: 'client'
+    }
 }, {
     timestamps: true
 })

@@ -2,6 +2,7 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import {Request, Response} from 'express'
 import { stringify } from 'querystring';
+const path = require('path')
 
 const app = express()
 
@@ -15,7 +16,9 @@ const client   = require('./src/CONTROLLERS/Client/clientRouting.ts');
 const product  = require('./src/CONTROLLERS/Product/productRouting.ts');
 const employee = require('./src/CONTROLLERS/Employee/employeeRouting.ts');
 const user     = require('./src/CONTROLLERS/User/userRouting.ts');
-const company  = require('./src/CONTROLLERS/Company /companyRouting.ts');
+const company  = require('./src/CONTROLLERS/Company/companyRouting.ts');
+const view     = require('./src/VIEW/view.html');
+
 
 app.use('/login', login)
 app.use('/task', task)
@@ -25,6 +28,7 @@ app.use('/employee', employee)
 app.use('/user', user)
 app.use('/company', company)
 app.use('/tags', tags)
+
 
 
 
