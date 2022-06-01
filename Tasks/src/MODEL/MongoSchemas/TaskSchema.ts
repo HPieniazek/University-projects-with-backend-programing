@@ -38,7 +38,7 @@ const taskSchema = new mongoose.Schema({
     employee:{
         type: Schema.Types.ObjectId, 
         ref: 'employee',
-        required: [true, "Enter employee id"] 
+        required: [false, "Enter employee id"] 
     },
     client:{
         type: Schema.Types.ObjectId,

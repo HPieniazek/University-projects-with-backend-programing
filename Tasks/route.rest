@@ -1,9 +1,11 @@
 GET http://localhost:3000/task
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.dXNlcjE.NS8JkbCfkcmgF1l2dIlF4aw8Qga0K3KS0-pt9ElPd0c
 
 ###
 
 POST http://localhost:3000/task
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.dXNlcjE.NS8JkbCfkcmgF1l2dIlF4aw8Qga0K3KS0-pt9ElPd0c
 
 {
     "id":"0000",

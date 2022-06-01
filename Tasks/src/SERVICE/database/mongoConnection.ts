@@ -1,16 +1,16 @@
 import express from 'express';
 import mongoose from "mongoose";
-import 'dotenv/config' 
+import dotenv from "dotenv";
 import { error } from 'console';
 //import { Tag } from '../../MODEL/classes';
-//require('dotenv').config({ path: '../.env' })
+
 
 const app = express();
 
 export class MongoDB {
-    connString:string = 'mongodb+srv://HubPi:1234@hub-pab.c5efk.mongodb.net/Task?retryWrites=true&w=majority'
+    connString:string = process.env.DATABASE_CONNECTION;
 
-    constructor(connString:string = 'mongodb+srv://HubPi:1234@hub-pab.c5efk.mongodb.net/Task?retryWrites=true&w=majority'){
+    constructor(connString:string = process.env.DATABASE_CONNECTION){
         this.connString = connString;
         console.log('Connecting to mongo');
         mongoose.connect(this.connString)
